@@ -1,0 +1,31 @@
+# Dépendances pour l’API FastAPI sur Render (sans Streamlit / notebook).
+# Build Command Render : pip install -r requirements-api.txt
+
+# Core LLM / embeddings
+openai
+
+# PDF + parsing (inchangé si tu réutilises du code d’ingestion côté serveur)
+pymupdf
+pymupdf4llm
+beautifulsoup4
+lxml
+
+# Vector + search
+faiss-cpu
+rank-bm25
+
+# Data
+pandas==2.2.2
+numpy
+pyarrow==15.0.2
+
+# Utils
+tqdm
+tiktoken
+python-dotenv
+
+# HTTP API
+fastapi
+uvicorn[standard]
+
+langgraph
