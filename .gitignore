@@ -1,0 +1,5 @@
+Env.py
+.env
+__pycache__/
+
+DORA_RAG_venv/

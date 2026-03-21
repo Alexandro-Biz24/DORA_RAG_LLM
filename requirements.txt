@@ -1,0 +1,35 @@
+# Core LLM / embeddings
+openai
+
+# PDF + parsing
+pymupdf
+pymupdf4llm
+beautifulsoup4
+lxml
+
+# Vector + search
+faiss-cpu
+rank-bm25
+
+# Data
+pandas==2.2.2
+numpy
+pyarrow==15.0.2
+
+# Utils
+tqdm
+tiktoken
+python-dotenv
+
+# HTTP API (Render / déploiement)
+fastapi
+uvicorn[standard]
+httpx
+
+# Notebook / kernel
+ipykernel
+
+streamlit
+streamlit-pdf>=1.0.8,<2
+langgraph
+
