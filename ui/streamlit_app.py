@@ -588,6 +588,31 @@ def _inject_layout_css() -> None:
             border-color: rgba(232, 119, 34, 0.55) !important;
             box-shadow: 0 4px 16px rgba(200, 95, 40, 0.18);
         }
+
+        /* —— Mobile / petit écran : Streamlit n’est pas mobile-first ; on adoucit sans toucher au desktop —— */
+        @media (max-width: 768px) {
+            .main .block-container {
+                padding-left: 0.85rem !important;
+                padding-right: 0.85rem !important;
+                padding-top: 1rem !important;
+                border-radius: 10px !important;
+            }
+            [data-testid="stSidebarContent"] {
+                max-height: 100dvh;
+                max-height: 100vh;
+                -webkit-overflow-scrolling: touch;
+            }
+            .dora-sidebar-section-label {
+                font-size: 0.625rem !important;
+            }
+            .dora-sidebar-section-hint {
+                font-size: 0.75rem !important;
+            }
+            /* Réduit un peu la densité des cartes toggles sur étroit */
+            section[data-testid="stSidebar"] div[class*="st-key-opt_"] {
+                padding: 0.3rem 0.4rem 0.3rem 0.5rem !important;
+            }
+        }
         </style>
         """,
         unsafe_allow_html=True,
