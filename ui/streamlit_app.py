@@ -676,11 +676,11 @@ answer_question = _get_answer_fn(_resolve_dora_api_base())
 # ---------------------------------------------------------------------------
 
 with st.sidebar:
-    logo_path = _resolve_logo_path()
-    if logo_path is not None:
-        st.image(str(logo_path), use_container_width=True)
-    else:
-        st.caption("Placez le fichier `pwc_logo.png` dans `ui/asset/` ou `ui/assets/`.")
+   # logo_path = _resolve_logo_path()
+  #  if logo_path is not None:
+   #     st.image(str(logo_path), use_container_width=True)
+   # else:
+  #      st.caption("Placez le fichier `pwc_logo.png` dans `ui/asset/` ou `ui/assets/`.")
 
     st.markdown("## DORA")
     st.caption("Assistant juridique (RAG)")
