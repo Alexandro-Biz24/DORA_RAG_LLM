@@ -1,3 +1,4 @@
+import re
 from typing import TypedDict, List, Dict, Optional
 
 from langgraph.graph import StateGraph, END
@@ -14,7 +15,7 @@ Rules:
 - Answer only from the provided context.
 - Do not invent legal facts.
 - If the answer is not clearly supported by the context, say so explicitly.
-- Cite the relevant chunk_id(s) in your answer when making legal claims.
+- Do not expose internal technical identifiers (for example chunk_id, block_id, vector ids) in the answer.
 - Prefer precise, structured, neutral answers.
 - If the user asks for a summary, keep legal precision.
 - If the user asks for a comparison, separate the compared points clearly.
@@ -140,10 +141,37 @@ def build_user_prompt(
     prompt_parts.append(question)
     prompt_parts.append("")
     prompt_parts.append(
-        "Instructions: answer only from the retrieved legal context and cite chunk_id(s) for the statements you make."
+        "Instructions: answer only from the retrieved legal context. "
+        "Do not display internal identifiers such as chunk_id."
     )
 
     return "\n".join(prompt_parts).strip()
+
+
+def _sanitize_answer_text(answer: str) -> str:
+    """
+    Nettoie les références techniques (chunk_id, block_id...) dans le texte final
+    sans toucher aux métadonnées de `sources`.
+    """
+    cleaned = answer
+    # (chunk_id: XXX) ou variantes proches
+    cleaned = re.sub(
+        r"\s*\((?:chunk[_\s-]?id|block[_\s-]?id)\s*:\s*[^)]+\)",
+        "",
+        cleaned,
+        flags=re.IGNORECASE,
+    )
+    # "chunk_id: XXX" hors parenthèses (jusqu'à fin de ligne / ponctuation simple)
+    cleaned = re.sub(
+        r"(?:^|[\s,;])(?:chunk[_\s-]?id|block[_\s-]?id)\s*:\s*[^\n,;]+",
+        "",
+        cleaned,
+        flags=re.IGNORECASE,
+    )
+    # Compacte les espaces créés par la suppression.
+    cleaned = re.sub(r"[ \t]{2,}", " ", cleaned)
+    cleaned = re.sub(r"\n{3,}", "\n\n", cleaned)
+    return cleaned.strip()
 
 
 def extract_sources_from_chunks(chunks: List[Dict]) -> List[Dict]:
@@ -237,7 +265,7 @@ def answer_node(state: GraphState) -> GraphState:
         ],
     )
 
-    answer = response.choices[0].message.content.strip()
+    answer = _sanitize_answer_text(response.choices[0].message.content.strip())
 
     return {
         "answer": answer

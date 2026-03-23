@@ -502,6 +502,12 @@ def _inject_layout_css() -> None:
             padding-top: 1.5rem;
             padding-bottom: 2rem;
         }
+        /* Sur certains téléphones / thèmes, Streamlit peut afficher du texte en blanc.
+           On force une couleur lisible dans la zone chat (contraste). */
+        .main .block-container,
+        .main .block-container * {
+            color: rgba(40, 28, 22, 0.95) !important;
+        }
         /* Sidebar : même famille de teintes, reste dans son propre scroll */
         section[data-testid="stSidebar"] {
             background: linear-gradient(
